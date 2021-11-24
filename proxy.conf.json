@@ -1,0 +1,10 @@
+{
+    "/api": {
+      "target": "https://dxv7y6qjta.execute-api.us-east-2.amazonaws.com",
+      "secure": true,
+      "changeOrigin": true,
+      "pathRewrite": {
+        "^/api": "http://localhost:4200"
+      }
+    }
+  }

@@ -1,0 +1,196 @@
+
+<!-- Toolbar -->
+<div class="toolbar" role="banner">
+  <img
+    width="40"
+    alt="Angular Logo"
+    src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg=="
+  />
+  <span>BackUp Application API Testing Page</span>
+    
+</div>
+
+
+<nav>
+  <a routerLink="api">APIs</a>
+  <a routerLink="Video">Videos and Documents</a>
+  <a routerLink="auth">Authentication</a>
+  </nav>
+
+
+<!-- Content -->
+
+<div class="content" role="main">
+
+  
+  <h1>Run Jobs</h1>
+
+
+  
+  <div class="card-container">
+    <a (click)="triggerDS()" class="card">Backup Server</a> 
+  
+    <a (click)="triggerDB()" class="card">Backup Database</a> 
+
+      
+  <br>   
+  
+  </div>
+
+
+  <h1>Data Recall</h1>
+
+  <!--Action Buttons-->
+
+  <div class="card-container">
+  <a (click)="listBuckets()" class="card">List S3 Buckets</a> 
+
+  <a (click)="getDBs()" class="card">List Databases</a> 
+
+    <a (click)="getStreams()" class="card">DataSync Log</a>
+    
+<br>   
+
+</div>
+
+<!--Lists-->
+
+    <table>
+      <tr>
+        <th width="30%">S3 Servers</th>
+        <th width="30%">Databases</th>
+        <th width="30%">Logs (Click Log Update for Event Details)</th>
+      </tr>
+      <tr>
+        <td>
+
+          <div  *ngFor="let one of data">
+            <h2>S3 Server</h2>
+            <p><b>Name: </b>{{one.Name._text}}</p>
+            <p><b>Creation Date: </b>{{one.CreationDate._text}}</p>
+            
+          </div>
+
+        </td>
+        <td>
+        
+          <div *ngFor="let one of databases">
+            
+            <h2>Database</h2>
+            <p><b>Name: </b>{{one.DBInstanceIdentifier}}</p>
+            <p><b>Status: </b>{{one.DBInstanceStatus}}</p>
+            <p><b>Preferred Backup Window: </b>{{one.PreferredBackupWindow}}</p>
+            <p><b>Type: </b>{{one.Engine}}</p>
+            <p><b>Version: </b>{{one.EngineVersion}}</p>
+            <p><b>ARN: </b>{{one.DBInstanceArn}}</p>
+          
+          
+          </div>
+       
+
+        </td>
+        <td>
+        <!-- third row -->
+          <div *ngFor="let one of streams">
+            <a (click)="getEventLog(one.logStreamName)"><b>Log Update:</b> {{one.lastEventTimestamp | date: 'HH:MM:SS, dd-MMM-yyyy'}}</a>
+
+            </div>
+          <h3>Event Viewer</h3>
+          <div *ngFor="let one of events">
+          
+            <p><b>{{one.timestamp | date: 'HH:MM:SS, dd-MMM-yyyy'}}</b>{{one.message}}</p>
+          
+          
+          </div>
+          
+       
+
+        </td>
+
+      </tr>
+
+    </table> 
+
+
+
+
+
+<h1>Videos and Documents</h1>
+
+
+
+<table>
+  <tr>
+    <th width="30%">Upload Document/Video</th>
+    <th width="30%">View Documents/Videos</th>
+  </tr>
+<td>  
+
+  <angular-file-uploader
+  [config]="documentsubmit"></angular-file-uploader>
+
+</td>
+<td>
+
+  <a (click)="listDocuments()" class="card">Refresh Documents</a> 
+
+
+  
+  <div *ngFor="let one of docudata">
+  
+    <p><b (click)="downloadFile(one.Key._text)">{{one.Key._text}}</b></p>
+    
+    <p>{{one.LastModified._text}}</p>
+  
+  
+  </div>
+
+  <a href="https://b6vt0hygc8.execute-api.us-east-2.amazonaws.com/Test/collect/example.pdf" 
+  download="archive.pdf">
+  example.pdf
+</a>
+
+</td>
+
+</table>
+
+
+
+
+
+ 
+   
+
+
+
+
+<br>
+
+<!--
+<h1>Two Factor?</h1>
+
+<table >
+
+<td>  
+<div class="card-container">
+  <a (click)="login()" class="card">Two Factor Test</a> 
+</div>
+    
+<form id='twofactorsubmission'  method='POST'>
+  <label for="tfactor">Enter the Validation Code</label><br>
+  <input type="text" id="tfactor" name="tfactor"><br><br>
+  <input type="submit">
+</form>
+
+</td>
+<td align="center">
+
+<div *ngIf="TwoFactor">Two Factor Login Successful!</div>
+</td></table>
+
+-->
+
+</div>
+<router-outlet></router-outlet>
+
+
